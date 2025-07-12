@@ -1,0 +1,88 @@
+{% extends 'advisor/base.html' %}
+
+{% block title %}Home - Animal Disease Advisor{% endblock %}
+
+{% block content %}
+  <h1>Animal Symptom Checker</h1>
+
+  <form method="POST" style="max-width: 900px; margin: auto;">
+    {% csrf_token %}
+    <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+      <div style="flex: 1; min-width: 300px;">
+        <p>Does the animal have a fever? 
+          <input type="radio" name="fever" value="yes"> Yes 
+          <input type="radio" name="fever" value="no" checked> No
+        </p>
+        <p>Is the animal drooling? 
+          <input type="radio" name="drooling" value="yes"> Yes 
+          <input type="radio" name="drooling" value="no" checked> No
+        </p>
+        <p>Are there blisters around the mouth? 
+          <input type="radio" name="mouth_blisters" value="yes"> Yes 
+          <input type="radio" name="mouth_blisters" value="no" checked> No
+        </p>
+        <p>Is the animal limping? 
+          <input type="radio" name="limping" value="yes"> Yes 
+          <input type="radio" name="limping" value="no" checked> No
+        </p>
+        <p>Does the animal have high fever? 
+          <input type="radio" name="high_fever" value="yes"> Yes 
+          <input type="radio" name="high_fever" value="no" checked> No
+        </p>
+        <p>Are the lymph nodes swollen? 
+          <input type="radio" name="swollen_lymph" value="yes"> Yes 
+          <input type="radio" name="swollen_lymph" value="no" checked> No
+        </p>
+        <p>Is the animal having trouble breathing? 
+          <input type="radio" name="breathing_difficulty" value="yes"> Yes 
+          <input type="radio" name="breathing_difficulty" value="no" checked> No
+        </p>
+        <p>Is the udder swollen? 
+          <input type="radio" name="udder_swelling" value="yes"> Yes 
+          <input type="radio" name="udder_swelling" value="no" checked> No
+        </p>
+      </div>
+
+      <div style="flex: 1; min-width: 300px;">
+        <p>Is the udder hot? 
+          <input type="radio" name="hot_udder" value="yes"> Yes 
+          <input type="radio" name="hot_udder" value="no" checked> No
+        </p>
+        <p>Is the milk abnormal? 
+          <input type="radio" name="bad_milk" value="yes"> Yes 
+          <input type="radio" name="bad_milk" value="no" checked> No
+        </p>
+        <p>Is the animal losing weight? 
+          <input type="radio" name="weight_loss" value="yes"> Yes 
+          <input type="radio" name="weight_loss" value="no" checked> No
+        </p>
+        <p>Does the animal have a dull coat? 
+          <input type="radio" name="dull_coat" value="yes"> Yes 
+          <input type="radio" name="dull_coat" value="no" checked> No
+        </p>
+        <p>Is the animal having diarrhea? 
+          <input type="radio" name="diarrhea" value="yes"> Yes 
+          <input type="radio" name="diarrhea" value="no" checked> No
+        </p>
+        <p>Did the animal die suddenly? 
+          <input type="radio" name="sudden_death" value="yes"> Yes 
+          <input type="radio" name="sudden_death" value="no" checked> No
+        </p>
+        <p>Is there bleeding? 
+          <input type="radio" name="bleeding" value="yes"> Yes 
+          <input type="radio" name="bleeding" value="no" checked> No
+        </p>
+        <p>Is the body stiff? 
+          <input type="radio" name="stiffness" value="yes"> Yes 
+          <input type="radio" name="stiffness" value="no" checked> No
+        </p>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+      <button type="submit" style="background-color: green; color: white; padding: 10px 20px; border: none; border-radius: 5px;">
+        Submit
+      </button>
+    </div>
+  </form>
+{% endblock %}

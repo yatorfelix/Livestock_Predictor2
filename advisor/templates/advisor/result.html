@@ -1,0 +1,14 @@
+{% extends 'advisor/base.html' %}
+
+{% block title %}Home - Animal Disease Advisor{% endblock %}
+
+{% block content %}
+  <h1>Diagnosis Result</h1>
+
+  <p><strong>Disease:</strong> {{ diagnosis }}</p>
+  <p><strong>Advice:</strong> {{ advice }}</p>
+
+  <a href="{% url 'diagnosis' %}">Check Another Animal</a> |
+  <a href="{% url 'home' %}">Home</a>
+
+{% endblock %}

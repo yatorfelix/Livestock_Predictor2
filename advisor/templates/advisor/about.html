@@ -1,0 +1,13 @@
+{% extends 'advisor/base.html' %}
+
+{% block title %}Home - Animal Disease Advisor{% endblock %}
+
+{% block content %}
+  <h1>About Animal Disease Advisor</h1>
+  <p>This web-based Knowledge-Based System (KBS) helps livestock farmers diagnose common diseases in cattle and goats based on visible symptoms.</p>
+  <p>The system uses AI principles like rule-based inference to suggest likely diseases and basic care advice before a veterinarian is contacted.</p>
+  <p>Created by: Felix & Yvette</p>
+  <a href="{% url 'home' %}">Back to Home</a>
+  <a href="{% url 'about' %}">About</a> | 
+  <a href="{% url 'resources' %}">Resources</a> |
+{% endblock %}

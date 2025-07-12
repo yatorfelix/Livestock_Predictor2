@@ -1,0 +1,17 @@
+{% extends 'advisor/base.html' %}
+
+{% block title %}Home - Animal Disease Advisor{% endblock %}
+
+{% block content %}
+  <h1>Livestock Health Resources</h1>
+  <ul>
+    <li><strong>Foot and Mouth Disease:</strong> https://www.oie.int/en/disease/foot-and-mouth-disease/</li>
+    <li><strong>Mastitis in Dairy Cattle:</strong> https://www.msdvetmanual.com/dairy-cattle/mastitis/overview-of-mastitis</li>
+    <li><strong>Anthrax Prevention:</strong> https://www.cdc.gov/anthrax/</li>
+    <li><strong>Deworming Schedules:</strong> Check local veterinary services for timing and drug types</li>
+  </ul>
+  <a href="{% url 'home' %}">Back to Home</a>
+  <a href="{% url 'about' %}">About</a> | 
+  <a href="{% url 'resources' %}">Resources</a> | 
+
+{% endblock %}

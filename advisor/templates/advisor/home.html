@@ -1,0 +1,9 @@
+{% extends 'advisor/base.html' %}
+
+{% block title %}Home - Animal Disease Advisor{% endblock %}
+
+{% block content %}
+  <h1>Welcome to the Animal Disease Advisor</h1>
+  <p>This Knowledge-Based System helps identify livestock diseases based on symptoms.</p>
+  <a href="{% url 'diagnosis' %}">Start Diagnosis</a>
+{% endblock %}
