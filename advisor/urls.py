@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import medication_calculator
+from .views import medication_calculator,BreedDetailView,BreedListView
 
 
 urlpatterns = [
@@ -14,5 +14,7 @@ urlpatterns = [
     path('diagnose/<str:animal_type>/report/', views.diagnosis_report, name='diagnosis_report'),
     path('calculator/', medication_calculator, name='medication_calculator'),
     path('weather-advice/', views.weather_advice, name='weather_advice'),
+    path('breeds/', BreedListView.as_view(), name='breed_list'),
+    path('breeds/<int:pk>/', BreedDetailView.as_view(), name='breed_detail'),
 
 ]

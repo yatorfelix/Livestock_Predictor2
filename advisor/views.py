@@ -16,6 +16,14 @@ from django.shortcuts import render
 from django.core.cache import cache  # For caching API responses
 
 
+
+
+from django.shortcuts import render
+from django.views.generic import ListView, DetailView
+from .models import Breed
+
+
+
 def home(request):
     animals = [
         {'name': 'Hen', 'slug': 'hen', 'image': 'images/hen.jpg'},
@@ -305,3 +313,51 @@ def weather_advice(request):
     
     # Return HTML for direct access
     return render(request, "advisor/weather_advice.html", context)
+
+
+
+class BreedListView(ListView):
+    model = Breed
+    template_name = 'advisor/breeds.html'
+    context_object_name = 'breeds'
+    paginate_by = 12
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        
+        # Filter by species
+        species = self.request.GET.get('species')
+        if species:
+            queryset = queryset.filter(species=species)
+        
+        # Filter by climate
+        climate = self.request.GET.get('climate')
+        if climate:
+            queryset = queryset.filter(climate_suitability=climate)
+        
+        # Filter featured
+        featured = self.request.GET.get('featured')
+        if featured == '1':
+            queryset = queryset.filter(is_featured=True)
+        
+        return queryset.order_by('species', 'name')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['species_choices'] = dict(Breed.SPECIES_CHOICES)
+        context['climate_choices'] = dict(Breed.CLIMATE_CHOICES)
+        return context
+
+class BreedDetailView(DetailView):
+    model = Breed
+    template_name = 'advisor/breed_detail.html'
+    context_object_name = 'breed'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['related_breeds'] = Breed.objects.filter(
+            species=self.object.species
+        ).exclude(
+            pk=self.object.pk
+        )[:4]
+        return context
