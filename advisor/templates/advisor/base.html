@@ -23,17 +23,22 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item mx-2">
-                        <a class="nav-link active" href="{% url 'home' %}">Home</a>
+                        <a class="nav-link active" href="{% url 'home' %}" style="font-size: 25px;">Home</a>
                     </li>
                     <li class="nav-item mx-2">
-                        <a class="nav-link" href="{% url 'about' %}">About</a>
+                        <a class="nav-link" href="{% url 'medication_calculator' %}" style="font-size: 25px;">Calculator</a>
                     </li>
                     <li class="nav-item mx-2">
-                        <a class="nav-link" href="{% url 'resources' %}">Resources</a>
+                        <a class="nav-link" href="{% url 'resources' %}" style="font-size: 25px;">Resources</a>
                     </li>
                     <li class="nav-item mx-2">
-                        <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                        <a class="nav-link" href="{% url 'contact' %}" style="font-size: 25px;">Contact</a>
                     </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" href="{% url 'about' %}"style="font-size: 25px;">About</a>
+                    </li>
+                    
+                    
                 </ul>
             </div>
         </div>
@@ -68,13 +73,50 @@
         </div>
     </section>
 
+
+<!-- In your main template (e.g., base.html) -->
+<div id="weather-widget-container"></div>
+
+<script>
+// Load weather widget on page load
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/weather-advice/')
+        .then(response => response.json())
+        .then(data => {
+            // Create a temporary container
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = `
+                <div class="weather-widget">
+                    <h4><i class="fas fa-cloud-sun"></i> Weather Advisory</h4>
+                    <div class="weather-data">
+                        <div><strong>Temp:</strong> ${data.weather.temp}°C</div>
+                        <div><strong>Humidity:</strong> ${data.weather.humidity}%</div>
+                        <div><strong>Rain:</strong> ${data.weather.rain} mm</div>
+                        <div><strong>Conditions:</strong> ${data.weather.conditions}</div>
+                    </div>
+                    <div class="advice">
+                        <ul>${data.advice.map(tip => `<li>${tip}</li>`).join('')}</ul>
+                    </div>
+                </div>
+            `;
+            // Insert into container
+            document.getElementById('weather-widget-container').appendChild(tempDiv.firstChild);
+        });
+});
+</script>
+
+
+
+
+
+
     <!-- Footer -->
     <footer class="bg-dark text-white py-4">
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
                     <h5><i class="fas fa-paw me-2"></i>Livestock Advisor</h5>
-                    <p class="text-muted">Helping farmers since 2023</p>
+                    <p class="text-muted">Helping farmers since 2025</p>
                 </div>
                 <div class="col-md-6 text-md-end">
                     <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>

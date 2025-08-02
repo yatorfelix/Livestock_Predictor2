@@ -1,0 +1,205 @@
+
+{% extends "advisor/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Header Card -->
+    <div class="card shadow-sm mb-4 border-0">
+        <div class="card-header bg-success text-white">
+            <h3 class="mb-0">
+                <i class="fas fa-pills mr-2"></i>
+                Medication Dosage Calculator
+            </h3>
+        </div>
+    </div>
+
+    <!-- Calculator Card -->
+    <div class="card shadow-lg mb-4">
+        <div class="card-body">
+            {% if not medications %}
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                No medications found. Please add them in the 
+                <a href="{% url 'admin:index' %}" class="alert-link">admin panel</a>.
+            </div>
+            {% else %}
+            <form method="post" id="dosageForm">
+                {% csrf_token %}
+                
+                <!-- Medication Selection -->
+                <div class="form-group row mb-4">
+                    <label for="medication" class="col-md-3 col-form-label">
+                        <i class="fas fa-medkit mr-2 text-success"></i>
+                        Medication:
+                    </label>
+                    <div class="col-md-9">
+                        <select class="form-control selectpicker" id="medication" name="medication" required>
+                            <option value="">-- Select Medication --</option>
+                            {% for med in medications %}
+                            <option value="{{ med.id }}" data-animal="{{ med.animal_type }}">
+                                {{ med.name }} ({{ med.animal_type|title }})
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Animal Weight Input -->
+                <div class="form-group row mb-4">
+                    <label for="weight" class="col-md-3 col-form-label">
+                        <i class="fas fa-weight mr-2 text-success"></i>
+                        Animal Weight (kg):
+                    </label>
+                    <div class="col-md-9">
+                        <div class="input-group">
+                            <input type="number" step="0.1" min="0.1" 
+                                   class="form-control" id="weight" name="weight" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text">kg</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Calculate Button -->
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-success btn-lg px-4">
+                        <i class="fas fa-calculator mr-2"></i>
+                        Calculate Dosage
+                    </button>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    {% if result %}
+    <div class="card shadow-lg border-success">
+        <div class="card-header bg-light">
+            <h4 class="mb-0 text-success">
+                <i class="fas fa-file-prescription mr-2"></i>
+                Dosage Results
+            </h4>
+        </div>
+        <div class="card-body">
+            {% if result.error %}
+            <div class="alert alert-danger">
+                <h5 class="alert-heading">
+                    <i class="fas fa-exclamation-circle mr-2"></i>
+                    Calculation Error
+                </h5>
+                <hr>
+                <p class="mb-0">{{ result.error }}</p>
+            </div>
+            {% else %}
+            <div class="row">
+                <!-- Calculated Dose -->
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-muted">
+                                <i class="fas fa-calculator mr-2"></i>
+                                Calculated Dose
+                            </h5>
+                            <div class="display-4 text-primary my-3">
+                                {{ result.calculated|floatformat:2 }}
+                                <small class="text-muted">mg</small>
+                            </div>
+                            <p class="text-muted mb-0">
+                                ({{ result.calculated|floatformat:2 }} mg/kg × {{ weight }} kg)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recommended Dose -->
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <h5 class="card-title text-muted">
+                                <i class="fas fa-check-circle mr-2"></i>
+                                Recommended Dose
+                            </h5>
+                            <div class="display-4 {% if result.warning %}text-warning{% else %}text-success{% endif %} my-3">
+                                {{ result.recommended|floatformat:2 }}
+                                <small class="text-muted">mg</small>
+                            </div>
+                            {% if result.warning %}
+                            <div class="alert alert-warning mt-2 mb-0 py-2">
+                                <i class="fas fa-exclamation-triangle mr-2"></i>
+                                {{ result.warning }}
+                            </div>
+                            {% else %}
+                            <p class="text-success mb-0">
+                                <i class="fas fa-check mr-2"></i>
+                                Safe dosage range
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Administration Notes -->
+            {% if result.notes %}
+            <div class="card border-left-success shadow-none mt-4">
+                <div class="card-body">
+                    <h5 class="text-success">
+                        <i class="fas fa-notes-medical mr-2"></i>
+                        Administration Notes
+                    </h5>
+                    <hr>
+                    <div class="pl-3">
+                        {{ result.notes|linebreaks }}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Print Button -->
+            <div class="text-center mt-4">
+                <button onclick="window.print()" class="btn btn-outline-success">
+                    <i class="fas fa-print mr-2"></i>
+                    Print Recommendations
+                </button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .selectpicker {
+        border-radius: 0.25rem;
+        border: 1px solid #ced4da;
+    }
+    .card-header {
+        border-radius: 0.35rem 0.35rem 0 0 !important;
+    }
+    .border-left-success {
+        border-left: 4px solid #28a745 !important;
+    }
+    @media print {
+        .btn, .form-group, #dosageForm {
+            display: none !important;
+        }
+        .card {
+            border: none !important;
+            box-shadow: none !important;
+        }
+    }
+</style>
+
+<script>
+// Dynamic animal type indicator
+document.getElementById('medication').addEventListener('change', function() {
+    const selectedOption = this.options[this.selectedIndex];
+    const animalType = selectedOption.getAttribute('data-animal');
+    // You could add visual feedback here if needed
+    console.log('Selected animal type:', animalType);
+});
+</script>
+{% endblock %}

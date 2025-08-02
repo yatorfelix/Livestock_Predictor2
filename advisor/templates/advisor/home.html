@@ -135,4 +135,136 @@
         </div>
     </div>
 </section>
+
+<div id="weather-widget" style="border: 1px solid #ddd; padding: 15px; border-radius: 8px; max-width: 300px;">
+    <h4>Loading weather...</h4>
+
+
+<script>document.addEventListener('DOMContentLoaded', function() {
+    // Create widget container
+    let widgetContainer = document.getElementById('weather-widget');
+    if (!widgetContainer) {
+        widgetContainer = document.createElement('div');
+        widgetContainer.id = 'weather-widget';
+        document.body.appendChild(widgetContainer);
+    }
+
+    // Apply GREEN & WHITE theme styles
+    widgetContainer.style.cssText = `
+        border: 2px solid #4CAF50; /* Green border */
+        border-radius: 10px;
+        padding: 15px;
+        width: 320px;
+        background: white;
+        margin: 20px auto;
+        font-family: Arial, sans-serif;
+        box-shadow: 0 3px 6px rgba(76, 175, 80, 0.1); /* Green tinted shadow */
+    `;
+
+    // Loading state with green spinner
+    widgetContainer.innerHTML = `
+        <h4 style="
+            margin-top: 0;
+            color: #2E7D32; /* Dark green */
+            border-bottom: 2px solid #C8E6C9; /* Light green divider */
+            padding-bottom: 8px;
+            text-align: center;
+        ">
+            <i class="fas fa-spinner fa-spin" style="color: #4CAF50;"></i> 
+            Loading weather...
+        </h4>
+    `;
+
+    // Fetch weather data
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            position => updateWeather(position.coords.latitude, position.coords.longitude),
+            error => updateWeather(-1.286389, 36.817223) // Default Nairobi
+        );
+    } else {
+        updateWeather(-1.286389, 36.817223);
+    }
+
+    function updateWeather(lat, lon) {
+        fetch(`/weather-advice/?lat=${lat}&lon=${lon}&format=json`)
+            .then(response => response.json())
+            .then(data => {
+                widgetContainer.innerHTML = `
+                    <div style="text-align: center; margin-bottom: 10px;">
+                        <h4 style="
+                            margin: 0 0 5px 0;
+                            color: #1B5E20; /* Darker green */
+                            font-size: 1.2em;
+                        ">
+                            <i class="fas fa-map-marker-alt" style="color: #4CAF50;"></i>
+                            ${data.weather.location || 'Current Location'}
+                            ${data.weather.country ? `<span style="font-size:0.8em; color: #81C784;">(${data.weather.country})</span>` : ''}
+                        </h4>
+                        <div style="
+                            color: #388E3C; /* Medium green */
+                            font-size: 0.9em;
+                            font-weight: bold;
+                        ">
+                            <i class="fas fa-cloud-sun" style="color: #4CAF50;"></i> 
+                            Weather Advisory
+                        </div>
+                    </div>
+                    
+                    <!-- WHITE data card with green accents -->
+                    <div style="
+                        margin-bottom: 12px;
+                        text-align: left;
+                        padding: 12px;
+                        background: white;
+                        border-radius: 8px;
+                        border: 1px solid #C8E6C9; /* Light green border */
+                    ">
+                        <div style="margin-bottom: 6px;"><strong style="color: #2E7D32;">Temp:</strong> <span style="color: #333;">${data.weather.temp}°C</span></div>
+                        <div style="margin-bottom: 6px;"><strong style="color: #2E7D32;">Humidity:</strong> <span style="color: #333;">${data.weather.humidity}%</span></div>
+                        <div style="margin-bottom: 6px;"><strong style="color: #2E7D32;">Rain:</strong> <span style="color: #333;">${data.weather.rain} mm</span></div>
+                        <div><strong style="color: #2E7D32;">Conditions:</strong> <span style="color: #333; text-transform: capitalize;">${data.weather.conditions}</span></div>
+                    </div>
+                    
+                    <!-- GREEN alert panel -->
+                    <div style="
+                        background: #E8F5E9; /* Very light green */
+                        border-left: 4px solid #4CAF50;
+                        padding: 10px;
+                        border-radius: 0 4px 4px 0;
+                    ">
+                        <ul style="
+                            padding-left: 20px;
+                            margin: 0;
+                            color: #1B5E20; /* Dark green text */
+                        ">
+                            ${data.advice.map(tip => `
+                                <li style="margin-bottom: 8px;">
+                                    <i class="fas fa-exclamation-circle" style="color: #4CAF50;"></i>
+                                    ${tip}
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                `;
+            })
+            .catch(error => {
+                widgetContainer.innerHTML = `
+                    <div style="
+                        color: #D32F2F;
+                        text-align: center;
+                        padding: 10px;
+                        background: #FFEBEE;
+                        border-radius: 4px;
+                    ">
+                        <i class="fas fa-exclamation-triangle"></i> 
+                        Weather data unavailable
+                    </div>
+                `;
+            });
+    }
+});
+</script>
+
+</div>
+
 {% endblock %}

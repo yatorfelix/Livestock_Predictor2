@@ -1,0 +1,46 @@
+<div class="weather-card">
+    <h2>🌤️ Weather Advisory for Your Livestock</h2>
+    
+    {% if weather.success %}
+        <p>
+            <strong>Temperature:</strong> {{ weather.temp }}°C<br>
+            <strong>Humidity:</strong> {{ weather.humidity }}%<br>
+            <strong>Rainfall:</strong> {{ weather.rain }} mm (last hour)<br>
+            <strong>Conditions:</strong> {{ weather.conditions|title }}
+        </p>
+    {% else %}
+        <p class="alert">{{ weather.error }}</p>
+        <p>Showing default recommendations.</p>
+    {% endif %}
+
+    <h3>Recommended Actions:</h3>
+    <ul>
+        {% for tip in advice %}
+            <li>{{ tip }}</li>
+        {% endfor %}
+    </ul>
+
+    <button onclick="getLocation()">Use My Current Location</button>
+</div>
+
+<script>
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                fetch(`/weather-advice/?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Update UI dynamically
+                        document.querySelector('.weather-card').innerHTML = `
+                            <h2>🌤️ Weather Advisory</h2>
+                            <p>Temp: ${data.weather.temp}°C, Humidity: ${data.weather.humidity}%</p>
+                            <ul>${data.advice.map(tip => `<li>${tip}</li>`).join('')}</ul>
+                        `;
+                    });
+            },
+            (err) => alert("Location access denied")
+        );
+    }
+}
+</script>

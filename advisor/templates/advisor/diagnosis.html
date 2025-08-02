@@ -2,308 +2,288 @@
 {% block title %}{{ animal|capfirst }} Diagnosis - Animal Advisor{% endblock %}
 
 {% block content %}
-<h1 class="mb-4">{{ animal|capfirst }} Diagnosis</h1>
+<div class="container">
+    <h1 class="mb-4">{{ animal|capfirst }} Diagnosis</h1>
 
-<form method="post">
-    {% csrf_token %}
-    <p>Select observed symptoms:</p>
-
-    {% if animal == 'hen' %}
-    <label><input type="checkbox" name="symptoms" value="lethargy"> Lethargy</label><br>
-    <label><input type="checkbox" name="symptoms" value="diarrhea"> Diarrhea</label><br>
-    <label><input type="checkbox" name="symptoms" value="green droppings"> Green Droppings</label><br>
-    <label><input type="checkbox" name="symptoms" value="sneezing"> Sneezing</label><br>
-    <label><input type="checkbox" name="symptoms" value="nasal discharge"> Nasal Discharge</label><br>
-    <label><input type="checkbox" name="symptoms" value="swollen face"> Swollen Face</label><br>
-    <label><input type="checkbox" name="symptoms" value="twisting of neck"> Twisting of Neck</label><br>
-    <label><input type="checkbox" name="symptoms" value="loss of appetite"> Loss of Appetite</label><br>
-    <label><input type="checkbox" name="symptoms" value="scabs on comb"> Scabs on Comb</label><br>
-    <label><input type="checkbox" name="symptoms" value="difficulty breathing"> Difficulty Breathing</label><br>
-    <label><input type="checkbox" name="symptoms" value="bloody diarrhea"> Bloody Diarrhea</label><br>
-    <label><input type="checkbox" name="symptoms" value="dehydration"> Dehydration</label><br>
-    <label><input type="checkbox" name="symptoms" value="drop in egg production"> Drop in Egg Production</label><br>
-    <label><input type="checkbox" name="symptoms" value="soft-shelled eggs"> Soft-Shelled Eggs</label><br>
-    <label><input type="checkbox" name="symptoms" value="weight loss"> Weight Loss</label><br>
-    <label><input type="checkbox" name="symptoms" value="pale comb"> Pale Comb</label><br>
-    <label><input type="checkbox" name="symptoms" value="swollen joints"> Swollen Joints</label><br>
-    <label><input type="checkbox" name="symptoms" value="lameness"> Lameness</label><br>
-    <label><input type="checkbox" name="symptoms" value="purple comb"> Purple Comb</label><br>
-    <label><input type="checkbox" name="symptoms" value="eye swelling"> Eye Swelling</label><br>
-    <label><input type="checkbox" name="symptoms" value="open-mouth breathing"> Open-Mouth Breathing</label><br>
-    <label><input type="checkbox" name="symptoms" value="unsteady walking"> Unsteady Walking</label><br>
-    <label><input type="checkbox" name="symptoms" value="head tilt"> Head Tilt</label><br>
-
-
-
-    {% elif animal == 'goat' %}
-    <div class="card shadow mb-4">
-      <div class="card-header bg-success text-white">
-        <h5 class="mb-0">Select Goat Symptoms</h5>
-      </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="symptoms" value="coughing" id="goat-coughing">
-              <label class="form-check-label" for="goat-coughing">Coughing</label>
+    <form method="post" id="diagnosisForm">
+        {% csrf_token %}
+        
+        {% if animal == 'hen' %}
+        <div class="card shadow mb-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Select Hen Symptoms</h5>
             </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="symptoms" value="weight loss" id="goat-weightloss">
-              <label class="form-check-label" for="goat-weightloss">Weight Loss</label>
+            <div class="card-body">
+                <div class="symptom-grid">
+                    {% for symptom in hen_symptoms %}
+                    <div class="symptom-item">
+                        <input type="checkbox" name="symptoms" value="{{ symptom }}" id="hen-{{ forloop.counter }}" class="symptom-checkbox">
+                        <label for="hen-{{ forloop.counter }}" class="symptom-label">{{ symptom }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="symptoms" value="diarrhea" id="goat-diarrhea">
-              <label class="form-check-label" for="goat-diarrhea">Diarrhea</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="symptoms" value="rough coat" id="goat-roughcoat">
-              <label class="form-check-label" for="goat-roughcoat">Rough Coat</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="symptoms" value="poor appetite" id="goat-appetite">
-              <label class="form-check-label" for="goat-appetite">Poor Appetite</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="symptoms" value="labored breathing" id="goat-labored">
-              <label class="form-check-label" for="goat-labored">Labored Breathing</label>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="symptoms" value="scabs on lips" id="goat-scabs">
-              <label class="form-check-label" for="goat-scabs">Scabs on Lips</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="symptoms" value="sore mouth" id="goat-soremouth">
-              <label class="form-check-label" for="goat-soremouth">Sore Mouth</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="symptoms" value="swollen jaw" id="goat-jaw">
-              <label class="form-check-label" for="goat-jaw">Swollen Jaw</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="symptoms" value="pale gums" id="goat-gums">
-              <label class="form-check-label" for="goat-gums">Pale Gums</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="symptoms" value="bloating" id="goat-bloating">
-              <label class="form-check-label" for="goat-bloating">Bloating</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="symptoms" value="nasal discharge" id="goat-nasal">
-              <label class="form-check-label" for="goat-nasal">Nasal Discharge</label>
-            </div>
-          </div>
         </div>
-      </div>
-    </div>
-    
 
-    {% elif animal == 'cow' %}
-<div class="mb-4">
-  <h4 class="mb-3 text-primary">Select Cow Symptoms</h4>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="fever" id="fever">
-        <label class="form-check-label" for="fever">Fever</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="milk drop" id="milk_drop">
-        <label class="form-check-label" for="milk_drop">Milk Drop</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="swollen udder" id="swollen_udder">
-        <label class="form-check-label" for="swollen_udder">Swollen Udder</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="bloated abdomen" id="bloated_abdomen">
-        <label class="form-check-label" for="bloated_abdomen">Bloated Abdomen</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="no rumination" id="no_rumination">
-        <label class="form-check-label" for="no_rumination">No Rumination</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="blood in urine" id="blood_in_urine">
-        <label class="form-check-label" for="blood_in_urine">Blood in Urine</label>
-      </div>
-    </div>
+        {% elif animal == 'goat' %}
+        <div class="card shadow mb-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Select Goat Symptoms</h5>
+            </div>
+            <div class="card-body">
+                <div class="symptom-grid">
+                    {% for symptom in goat_symptoms %}
+                    <div class="symptom-item">
+                        <input type="checkbox" name="symptoms" value="{{ symptom }}" id="goat-{{ forloop.counter }}" class="symptom-checkbox">
+                        <label for="goat-{{ forloop.counter }}" class="symptom-label">{{ symptom }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
 
-    <div class="col-md-6">
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="high fever" id="high_fever">
-        <label class="form-check-label" for="high_fever">High Fever</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="tick infestation" id="tick_infestation">
-        <label class="form-check-label" for="tick_infestation">Tick Infestation</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="swollen lymph nodes" id="swollen_lymph_nodes">
-        <label class="form-check-label" for="swollen_lymph_nodes">Swollen Lymph Nodes</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="respiratory distress" id="respiratory_distress">
-        <label class="form-check-label" for="respiratory_distress">Respiratory Distress</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="nasal discharge" id="nasal_discharge">
-        <label class="form-check-label" for="nasal_discharge">Nasal Discharge</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="coughing" id="coughing">
-        <label class="form-check-label" for="coughing">Coughing</label>
-      </div>
-    </div>
+        {% elif animal == 'cow' %}
+        <div class="card shadow mb-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Select Cow Symptoms</h5>
+            </div>
+            <div class="card-body">
+                <div class="symptom-grid">
+                    {% for symptom in cow_symptoms %}
+                    <div class="symptom-item">
+                        <input type="checkbox" name="symptoms" value="{{ symptom }}" id="cow-{{ forloop.counter }}" class="symptom-checkbox">
+                        <label for="cow-{{ forloop.counter }}" class="symptom-label">{{ symptom }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
 
-    <div class="col-md-6 mt-3">
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="depression" id="depression">
-        <label class="form-check-label" for="depression">Depression</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="watery diarrhea" id="watery_diarrhea">
-        <label class="form-check-label" for="watery_diarrhea">Watery Diarrhea</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="dehydration" id="dehydration">
-        <label class="form-check-label" for="dehydration">Dehydration</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="abortion" id="abortion">
-        <label class="form-check-label" for="abortion">Abortion</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="retained placenta" id="retained_placenta">
-        <label class="form-check-label" for="retained_placenta">Retained Placenta</label>
-      </div>
-    </div>
+        {% elif animal == 'sheep' %}
+        <div class="card shadow mb-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Select Sheep Symptoms</h5>
+            </div>
+            <div class="card-body">
+                <div class="symptom-grid">
+                    {% for symptom in sheep_symptoms %}
+                    <div class="symptom-item">
+                        <input type="checkbox" name="symptoms" value="{{ symptom }}" id="sheep-{{ forloop.counter }}" class="symptom-checkbox">
+                        <label for="sheep-{{ forloop.counter }}" class="symptom-label">{{ symptom }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% else %}
+            <p>Unknown animal type.</p>
+        {% endif %}
 
-    <div class="col-md-6 mt-3">
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="muscle tremors" id="muscle_tremors">
-        <label class="form-check-label" for="muscle_tremors">Muscle Tremors</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="aggression" id="aggression">
-        <label class="form-check-label" for="aggression">Aggression</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="hypersalivation" id="hypersalivation">
-        <label class="form-check-label" for="hypersalivation">Hypersalivation</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="lameness" id="lameness">
-        <label class="form-check-label" for="lameness">Lameness</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="swollen joints" id="swollen_joints">
-        <label class="form-check-label" for="swollen_joints">Swollen Joints</label>
-      </div>
-    </div>
+        <div class="selected-symptoms">
+            <h3>Selected Symptoms:</h3>
+            <div id="selectedSymptomsDisplay">No symptoms selected yet</div>
+        </div>
 
-    <div class="col-md-6 mt-3">
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="yellow eyes" id="yellow_eyes">
-        <label class="form-check-label" for="yellow_eyes">Yellow Eyes</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="dark red urine" id="dark_red_urine">
-        <label class="form-check-label" for="dark_red_urine">Dark Red Urine</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="sudden death" id="sudden_death">
-        <label class="form-check-label" for="sudden_death">Sudden Death</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" name="symptoms" value="bloody discharge" id="bloody_discharge">
-        <label class="form-check-label" for="bloody_discharge">Bloody Discharge</label>
-      </div>
-    </div>
-  </div>
-</div>
+        <div class="action-btns">
+            <button type="submit" class="btn btn-primary">Diagnose</button>
+            <button type="button" class="btn btn-outline" id="clearBtn">Clear Selection</button>
+            <a href="{% url 'home' %}" class="btn btn-outline">Back to Home</a>
+        </div>
+    </form>
 
-{% elif animal == 'sheep' %}
-<div class="card shadow mb-4">
-  <div class="card-header bg-success text-white">
-    <h5 class="mb-0">Select Sheep Symptoms</h5>
-  </div>
-  <div class="card-body">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" name="symptoms" value="wool loss" id="sheep-woolloss">
-          <label class="form-check-label" for="sheep-woolloss">Wool Loss</label>
+    {% if diagnosis %}
+        <div class="alert alert-info mt-4">
+            <h4>Diagnosis Result:</h4>
+            <p>{{ diagnosis }}</p>
         </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" name="symptoms" value="scabs or sores" id="sheep-scabs">
-          <label class="form-check-label" for="sheep-scabs">Scabs or Sores</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" name="symptoms" value="weight loss" id="sheep-weightloss">
-          <label class="form-check-label" for="sheep-weightloss">Weight Loss</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" name="symptoms" value="nasal discharge" id="sheep-nasal">
-          <label class="form-check-label" for="sheep-nasal">Nasal Discharge</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" name="symptoms" value="lameness" id="sheep-lameness">
-          <label class="form-check-label" for="sheep-lameness">Lameness</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" name="symptoms" value="coughing" id="sheep-coughing">
-          <label class="form-check-label" for="sheep-coughing">Coughing</label>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" name="symptoms" value="diarrhea" id="sheep-diarrhea">
-          <label class="form-check-label" for="sheep-diarrhea">Diarrhea</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" name="symptoms" value="fever" id="sheep-fever">
-          <label class="form-check-label" for="sheep-fever">Fever</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" name="symptoms" value="swollen joints" id="sheep-joints">
-          <label class="form-check-label" for="sheep-joints">Swollen Joints</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" name="symptoms" value="depression" id="sheep-depression">
-          <label class="form-check-label" for="sheep-depression">Depression</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" name="symptoms" value="rough coat" id="sheep-roughcoat">
-          <label class="form-check-label" for="sheep-roughcoat">Rough Coat</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" name="symptoms" value="labored breathing" id="sheep-labored">
-          <label class="form-check-label" for="sheep-labored">Labored Breathing</label>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-    {% else %}
-        <p>Unknown animal type.</p>
     {% endif %}
+</div>
 
-    <br>
-    <input class="btn btn-success mt-2" type="submit" value="Diagnose">
-</form>
+<style>
+    :root {
+        --primary: #28a745;
+        --primary-light: #5cb85c;
+        --secondary: #e8f5e9;
+        --accent: #4caf50;
+        --text: #2e2e2e;
+        --light: #f8f9fa;
+        --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--light);
+        color: var(--text);
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+    
+    .card {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 2rem;
+    }
+    
+    .card-header {
+        background-color: var(--primary);
+        color: white;
+        padding: 1rem 1.5rem;
+    }
+    
+    .card-header h5 {
+        margin: 0;
+        font-size: 1.25rem;
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+        background-color: white;
+    }
+    
+    .symptom-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+    
+    .symptom-item {
+        position: relative;
+    }
+    
+    .symptom-checkbox {
+        position: absolute;
+        opacity: 0;
+    }
+    
+    .symptom-label {
+        display: block;
+        background-color: var(--secondary);
+        border: 1px solid #c8e6c9;
+        border-radius: 8px;
+        padding: 0.8rem 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+        font-size: 0.9rem;
+    }
+    
+    .symptom-label:hover {
+        background-color: #c8e6c9;
+    }
+    
+    .symptom-checkbox:checked + .symptom-label {
+        background-color: var(--primary-light);
+        color: white;
+        border-color: var(--primary);
+        box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+    }
+    
+    .selected-symptoms {
+        background-color: var(--secondary);
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 2rem 0;
+    }
+    
+    .selected-symptoms h3 {
+        margin-top: 0;
+        color: var(--primary);
+    }
+    
+    .action-btns {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    
+    .btn {
+        padding: 0.8rem 1.8rem;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+        background-color: var(--primary);
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background-color: var(--accent);
+    }
+    
+    .btn-outline {
+        background-color: transparent;
+        border: 2px solid var(--primary);
+        color: var(--primary);
+    }
+    
+    .btn-outline:hover {
+        background-color: var(--secondary);
+    }
+    
+    .alert-info {
+        background-color: #d1ecf1;
+        border-color: #bee5eb;
+        color: #0c5460;
+        padding: 1rem;
+        border-radius: 8px;
+    }
+</style>
 
-{% if diagnosis %}
-    <div class="alert alert-info mt-4">
-        <h4>Diagnosis Result:</h4>
-        <p>{{ diagnosis }}</p>
-    </div>
-{% endif %}
-
-<p class="mt-3"><a href="{% url 'home' %}" class="btn btn-outline-secondary">Back to Home</a></p>
-
-
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('diagnosisForm');
+    const checkboxes = document.querySelectorAll('.symptom-checkbox');
+    const selectedDisplay = document.getElementById('selectedSymptomsDisplay');
+    const clearBtn = document.getElementById('clearBtn');
+    
+    // Update selected symptoms display
+    function updateSelectedDisplay() {
+        const selected = Array.from(checkboxes)
+            .filter(checkbox => checkbox.checked)
+            .map(checkbox => checkbox.value);
+        
+        if (selected.length === 0) {
+            selectedDisplay.textContent = 'No symptoms selected yet';
+        } else {
+            selectedDisplay.innerHTML = selected
+                .map(s => `<span class="symptom-tag">${s}</span>`)
+                .join(', ');
+        }
+    }
+    
+    // Handle checkbox changes
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateSelectedDisplay);
+    });
+    
+    // Clear selection
+    clearBtn.addEventListener('click', function() {
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = false;
+            const label = checkbox.nextElementSibling;
+            label.classList.remove('selected');
+        });
+        updateSelectedDisplay();
+    });
+    
+    // Form validation
+    form.addEventListener('submit', function(e) {
+        const selected = Array.from(checkboxes).some(checkbox => checkbox.checked);
+        if (!selected) {
+            e.preventDefault();
+            alert('Please select at least one symptom');
+        }
+    });
+});
+</script>
 {% endblock %}
